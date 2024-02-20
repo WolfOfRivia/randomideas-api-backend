@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-// also changed all instances of app.get() to router.get()
+// also changed all instances of app.method() to router.method()
 
 /* Keeping this in a RESTFUL structure, 
   - when we want to get ideas we make a get request to /api/ideas
@@ -56,6 +56,22 @@ router.get('/:id', (req, res) => {
   }
   res.json({ success: true, data: idea});
 });
+
+// Add an idea by accepting post requests
+router.post('/', (req, res) => {
+  // With the data sent, we want to accept text, tag, and username
+  // We are dealing with static data so we create the id ourselves, but a database creates it automatically
+  const idea = {
+    id: ideas.length + 1,
+    text: req.body.text,
+    tag: req.body.tag,
+    username: req.body.username,// Normally user authentication would be used but that is beyond the scope of this project
+    data: new Date().toISOString().slice(0, 10)
+  }
+  // console.log(idea);
+  ideas.push(idea);
+  res.json({ sucess: true, data: idea });
+})
 
 // don't forget to export the router
 module.exports = router;

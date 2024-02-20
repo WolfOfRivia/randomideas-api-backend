@@ -7,6 +7,10 @@ const port = 5000
 // initialize express
 const app = express();
 
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended:false }));
+
 // create routes
 app.get('/', (req, res) => {
   // This response works the content type is text/html 
