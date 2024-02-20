@@ -1,8 +1,13 @@
 // bring in express
 const express = require('express');
+require('dotenv').config();
 
 // set our port (for backend development brad uses 5000)
-const port = 5000
+const port = process.env.PORT || 5000;
+
+const connectDB = require('./config/db');
+
+connectDB();
 
 // initialize express
 const app = express();
