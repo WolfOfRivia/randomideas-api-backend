@@ -11,6 +11,9 @@ const router = express.Router();
   - when we want to update ideas we make a put request to /api/ideas
 */
 
+// We now have a working CRUD (Create, Read, Update, Delete) Api, or a full RESTFUL Api
+// What's next is using a database to persist the data, because right now this all works in memory
+
 const ideas = [
   {
     id: 1,
@@ -72,6 +75,50 @@ router.post('/', (req, res) => {
   ideas.push(idea);
   res.json({ sucess: true, data: idea });
 })
+
+// Update idea
+router.put('/:id', (req, res) => {
+  req.params.id;
+  const idea = ideas.find((idea) => idea.id === +req.params.id);
+  if (!idea) {
+    return res.status(404).json( {success: false, error: 'Resource not found'});
+  }
+
+  idea.text = req.body.text || idea.text;
+  idea.tag = req.body.tag || idea.tag;
+
+  res.json({ success: true, data: idea });
+
+});
+
+// Delete an idea
+router.delete('/:id', (req, res) => {
+  req.params.id;
+  const idea = ideas.find((idea) => idea.id === +req.params.id);
+  if (!idea) {
+    return res.status(404).json( {success: false, error: 'Resource not found'});
+  }
+
+  /*
+    Brad wanted us to try on our own first
+
+    This was my solution (It 100% works)
+
+    ideas.forEach((idea) => {
+      if(idea.id === +req.params.id) {
+        let index = ideas.indexOf(idea);
+        ideas.splice(index, 1);
+      }
+    })
+  */
+
+  // This was Brads solution
+  const index = ideas.indexOf(idea);
+  ideas.splice(index, 1);
+
+  res.json({ success: true, data: {} });
+
+});
 
 // don't forget to export the router
 module.exports = router;
